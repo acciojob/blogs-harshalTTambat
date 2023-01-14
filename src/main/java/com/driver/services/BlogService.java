@@ -61,7 +61,7 @@ public class BlogService {
 
     public Blog findBlogById(int blogId){
         //find a blog
-        return blogRepository1.findById(blogId);
+        return blogRepository1.findById(blogId).get();
     }
 
     public void addImage(Integer blogId, String description, String dimensions){
@@ -81,7 +81,7 @@ public class BlogService {
     public void deleteBlog(int blogId){
         //delete blog and corresponding images
         //finding blog & user by blogId
-        Blog blog = blogRepository1.findById(blogId);
+        Blog blog = blogRepository1.findById(blogId).get();
         if(blog == null) return;
 
         blogRepository1.deleteById(blogId);

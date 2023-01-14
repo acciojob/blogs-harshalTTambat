@@ -11,6 +11,6 @@ import java.util.ArrayList;
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
-    Blog findById(int id);
+    //Blog findById(int id);
 
 }
