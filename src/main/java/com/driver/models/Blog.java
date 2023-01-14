@@ -22,8 +22,7 @@ public class Blog {
     @CreationTimestamp
     private Date createdOn;
 
-    @UpdateTimestamp
-    private Date upDate;
+    private Date pubDate;
 
     @ManyToOne
     @JoinColumn
@@ -61,11 +60,16 @@ public class Blog {
         this.imageList = imageList;
     }
 
-
-
     public Blog() {
     }
 
+    public Date getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
+    }
 
     public int getId() {
         return id;
@@ -89,14 +93,6 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getUpDate() {
-        return upDate;
-    }
-
-    public void setUpDate(Date upDate) {
-        this.upDate = upDate;
     }
 
 

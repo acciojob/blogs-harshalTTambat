@@ -47,8 +47,9 @@ public class BlogService {
         User user = userRepository1.findById(userId).get();
         // creating blog
         Blog blog = new Blog(title,content);
+        blog.setPubDate(blog.getCreatedOn());
         // adding blog in user blogList
-        List<Blog> blogList = blogRepository1.findById(userId).get().getUser().getBlogList();
+        List<Blog> blogList = user.getBlogList();
         blogList.add(blog);
         //set user blog
         user.setBlogList(blogList);
@@ -75,13 +76,13 @@ public class BlogService {
         //delete blog and corresponding images
         //finding blog & user by blogId
         Blog blog = blogRepository1.findById(blogId).get();
-        User user = blogRepository1.findById(blogId).get().getUser();
-        int userId = user.getId();
-        List<Blog> blogList = userRepository1.findById(userId).get().getBlogList();
+        User user = blog.getUser();
+
+        List<Blog> blogList = user.getBlogList();
         blogList.remove(blog);
         user.setBlogList(blogList);
 
         blogRepository1.delete(blog);
-
+        userRepository1.save(user);
     }
 }
