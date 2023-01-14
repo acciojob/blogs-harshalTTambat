@@ -50,6 +50,10 @@ public class BlogService {
         blog.setPubDate(blog.getCreatedOn());
         // adding blog in user blogList
         List<Blog> blogList = user.getBlogList();
+        if(blogList.isEmpty())
+        {
+            blogList = new ArrayList<>();
+        }
         blogList.add(blog);
         //set user blog
         user.setBlogList(blogList);
@@ -67,9 +71,10 @@ public class BlogService {
     public void addImage(Integer blogId, String description, String dimensions){
         //add an image to the blog after creating it
         // find blog by blogId
-        Blog blog = blogRepository1.findById(blogId).get();
+        Blog blog = findBlogById(blogId);
         // creating image & adding image in blog
         Image image = imageService1.createAndReturn(blog, description, dimensions);
+        blogRepository1.save(blog);
     }
 
     public void deleteBlog(int blogId){
