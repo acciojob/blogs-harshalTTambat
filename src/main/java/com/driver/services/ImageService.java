@@ -51,7 +51,6 @@ public class ImageService {
     public int countImagesInScreen(Image image, String screenDimensions) {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
         //In case the image is null, return 0
-
         if(screenDimensions.split("x").length==2 || Objects.nonNull(image)){
             int maxlength=Integer.parseInt(screenDimensions.split("x")[0])/Integer.parseInt(image.getDimensions().split("x")[0]);
             int maxwidth=Integer.parseInt(screenDimensions.split("x")[1])/Integer.parseInt(image.getDimensions().split("x")[1]);
