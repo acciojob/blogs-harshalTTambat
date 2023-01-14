@@ -31,6 +31,12 @@ public class Blog {
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
     private List<Image> imageList;
 
+    public Blog(String title, String content, Date pubDate) {
+        this.title = title;
+        this.content = content;
+        this.pubDate = pubDate;
+    }
+
     public Date getCreatedOn() {
         return createdOn;
     }

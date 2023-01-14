@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,12 +39,11 @@ public class BlogService {
     public void createAndReturnBlog(Integer userId, String title, String content) {
 
         //create a blog at the current time
+        Blog blog = new Blog(title,content,new Date());
 
         // finding user by userId
         User user = userRepository1.findById(userId).get();
-        // creating blog
-        Blog blog = new Blog(title,content);
-        blog.setPubDate(blog.getCreatedOn());
+        blog.setUser(user);
         // adding blog in user blogList
         List<Blog> blogList = user.getBlogList();
         if(blogList.isEmpty())
@@ -51,12 +51,12 @@ public class BlogService {
             blogList = new ArrayList<>();
         }
         blogList.add(blog);
-        blog.setUser(user);
         //set user blog
         user.setBlogList(blogList);
       //updating the blog details
         //Updating the userInformation and changing its blogs
         blogRepository1.save(blog);
+        userRepository1.save(user);
     }
 
     public Blog findBlogById(int blogId){
@@ -70,6 +70,11 @@ public class BlogService {
         Blog blog = findBlogById(blogId);
         // creating image & adding image in blog
         Image image = imageService1.createAndReturn(blog, description, dimensions);
+        image.setBlog(blog);
+        List<Image> imageList=blog.getImageList();
+        if(imageList==null) imageList=new ArrayList<>();
+        imageList.add(image);
+        blog.setImageList(imageList);
         blogRepository1.save(blog);
     }
 
@@ -77,13 +82,8 @@ public class BlogService {
         //delete blog and corresponding images
         //finding blog & user by blogId
         Blog blog = blogRepository1.findById(blogId).get();
-        User user = blog.getUser();
+        if(blog == null) return;
 
-        List<Blog> blogList = user.getBlogList();
-        blogList.remove(blog);
-        user.setBlogList(blogList);
-
-        blogRepository1.delete(blog);
-        userRepository1.save(user);
+        blogRepository1.deleteById(blogId);
     }
 }
