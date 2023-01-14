@@ -31,6 +31,7 @@ public class UserService {
         blogs.add(blog);
         user1.setBlogList(blogs);
 
+
         userRepository3.save(user1);
     }
     public void deleteUser(int userId){

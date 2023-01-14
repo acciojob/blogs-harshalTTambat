@@ -55,10 +55,10 @@ public class BlogService {
             blogList = new ArrayList<>();
         }
         blogList.add(blog);
+        blog.setUser(user);
         //set user blog
         user.setBlogList(blogList);
-
-        //updating the blog details
+      //updating the blog details
         //Updating the userInformation and changing its blogs
         blogRepository1.save(blog);
     }
