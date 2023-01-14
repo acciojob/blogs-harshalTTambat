@@ -1,16 +1,8 @@
-package com.driver.models;
+package com.driver.RequestDTO;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
 
-@Entity
-@Table(name = "user")
-
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class UserRequestDto {
 
     @Column(nullable = false,unique = true)
     private String username;
@@ -21,38 +13,11 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Blog> blogList;
-
-    public User() {
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String username, String password, String firstName, String lastName) {
+    public UserRequestDto(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public List<Blog> getBlogList() {
-        return blogList;
-    }
-
-    public void setBlogList(List<Blog> blogList) {
-        this.blogList = blogList;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -87,4 +52,3 @@ public class User {
         this.lastName = lastName;
     }
 }
-
