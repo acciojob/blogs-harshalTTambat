@@ -3,7 +3,7 @@ package com.driver.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Images")
+@Table
 public class Image {
 
     @Id
