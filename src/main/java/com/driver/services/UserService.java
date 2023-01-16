@@ -18,43 +18,18 @@ public class UserService {
     BlogService blogService3;
 
     public void createUser(User user){
-
-        User user1 = new User();
-        user1.setUsername(user.getUsername());
-        user1.setPassword(user.getPassword());
-        user1.setLastName(user.getLastName());
-        user1.setFirstName(user.getFirstName());
-
-        Blog blog = blogService3.createBlog(user1);
-        List<Blog> blogs = user1.getBlogList();
-        blogs.add(blog);
-        user1.setBlogList(blogs);
-
-
-        userRepository3.save(user1);
+        userRepository3.save(user);
     }
-    public void deleteUser(int userId){
 
-        User user = userRepository3.findById(userId).get();
-        userRepository3.delete(user);
-        // blocks related to user will automatically delete because of bidirectional relation
+    public void deleteUser(int userId){
+        userRepository3.deleteById(userId);
     }
 
     public void updateUser(User user){
-
-        User userToBeUpdated = userRepository3.findById(user.getId()).get();
-
-        userToBeUpdated.setFirstName(user.getFirstName());
-        userToBeUpdated.setLastName(user.getLastName());
-        userToBeUpdated.setUsername(user.getUsername());
-        userToBeUpdated.setPassword(user.getPassword());
-        userToBeUpdated.setBlogList(user.getBlogList());
-
-        userRepository3.save(userToBeUpdated);
+        userRepository3.save(user);
     }
 
     public User findUserByUsername(String username){
-
         return userRepository3.findByUsername(username);
     }
 }

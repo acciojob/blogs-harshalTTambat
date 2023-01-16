@@ -4,6 +4,7 @@ import com.driver.models.Blog;
 import com.driver.models.Image;
 import com.driver.models.User;
 import com.driver.repositories.BlogRepository;
+import com.driver.repositories.ImageRepository;
 import com.driver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,40 +23,34 @@ public class BlogService {
     ImageService imageService1;
 
     @Autowired
+    ImageRepository imageRepository1;
+
+    @Autowired
     UserRepository userRepository1;
 
     public List<Blog> showBlogs(){
         //find all blogs
-        List<Blog> blogList = blogRepository1.findAll();
-        return blogList;
+        return blogRepository1.findAll();
     }
 
-    public Blog createBlog(User user)
-    {
-        Blog blog = new Blog();
-        blog.setUser(user);
-        return blog;
-    }
     public void createAndReturnBlog(Integer userId, String title, String content) {
-
         //create a blog at the current time
-        Blog blog = new Blog(title,content,new Date());
-
-        // finding user by userId
+        Blog blog = new Blog();
         User user = userRepository1.findById(userId).get();
+
+        //updating the blog details
         blog.setUser(user);
-        // adding blog in user blogList
-        List<Blog> blogList = user.getBlogList();
-        if(blogList.isEmpty())
-        {
-            blogList = new ArrayList<>();
-        }
-        blogList.add(blog);
-        //set user blog
-        user.setBlogList(blogList);
-      //updating the blog details
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setPubDate(new Date());
+
+
         //Updating the userInformation and changing its blogs
-        blogRepository1.save(blog);
+        List<Blog> currentBlogs = user.getBlogList();
+        currentBlogs.add(blog);
+        user.setBlogList(currentBlogs);
+
+        //Only calling the parent userRepository function as the child function will automatically be called by cascading
         userRepository1.save(user);
     }
 
@@ -65,25 +60,21 @@ public class BlogService {
     }
 
     public void addImage(Integer blogId, String description, String dimensions){
-        //add an image to the blog after creating it
-        // find blog by blogId
-        Blog blog = findBlogById(blogId);
-        // creating image & adding image in blog
+        //add an image to the blog
+        Blog blog = blogRepository1.findById(blogId).get();
         Image image = imageService1.createAndReturn(blog, description, dimensions);
-        image.setBlog(blog);
-        List<Image> imageList=blog.getImageList();
-        if(imageList==null) imageList=new ArrayList<>();
+        List<Image> imageList = blog.getImageList();
         imageList.add(image);
         blog.setImageList(imageList);
-        blogRepository1.save(blog);
+
+        blogRepository1.save(blog); //Just calling the parent repository and child repository will automatically be called.
     }
 
     public void deleteBlog(int blogId){
         //delete blog and corresponding images
-        //finding blog & user by blogId
         Blog blog = blogRepository1.findById(blogId).get();
-        if(blog == null) return;
-
-        blogRepository1.deleteById(blogId);
+        if(blog != null){
+            blogRepository1.delete(blog);
+        }
     }
 }

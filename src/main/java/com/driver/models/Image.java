@@ -3,29 +3,16 @@ package com.driver.models;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Image")
 public class Image {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String description;
-
-    @Column(nullable = false)
-    private String dimensions;
-
+    private String dimensions; // in the format HXD, for example: 720X480
     @ManyToOne
     @JoinColumn
     private Blog blog;
-
-    public Image() {
-    }
-
-    public Image(String description, String dimensions) {
-        this.description = description;
-        this.dimensions = dimensions;
-    }
 
     public int getId() {
         return id;
@@ -46,7 +33,6 @@ public class Image {
     public String getDimensions() {
         return dimensions;
     }
-
     public void setDimensions(String dimensions) {
         this.dimensions = dimensions;
     }

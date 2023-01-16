@@ -4,40 +4,17 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
-
+@Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false,unique = true)
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
     private String firstName;
     private String lastName;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Blog> blogList;
-
-    public User() {
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String username, String password, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     public List<Blog> getBlogList() {
         return blogList;
@@ -86,5 +63,5 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-}
 
+}
